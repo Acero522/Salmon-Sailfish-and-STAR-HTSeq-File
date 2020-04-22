@@ -1,0 +1,14 @@
+salmon index -t '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.cdna.all.fa' -i Salmonindex
+建立index
+
+salmon quant -i Salmonindex -l A -1 /home/acero/workplace/reads/DRR016125_1.fastq.gz -2 /home/acero/workplace/reads/DRR016125_2.fastq.gz -p 8 -o quant16125
+
+salmon quant -i '/home/acero/workplace/SalmonData/Salmonindex' -l A -r '/home/acero/workplace/reads/SRR8570506.fastq' -p 8 -o SRR
+普通quant
+
+
+salmon quant -p 8 -i '/home/acero/workplace/SalmonData/Salmonindex' -l A -1 '/home/acero/workplace/reads/DRR016125_1.fastq' -2 '/home/acero/workplace/reads/DRR016125_2.fastq' -o DRR016125_quant -g '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.46.gtf'
+
+salmon quant -p 8 -i '/home/acero/workplace/SalmonData/Salmonindex' -l A -r '/home/acero/workplace/reads/SRR8570506.fastq' -o SRR_quant -g '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.46.gtf'
+
+quant in Genelevel

@@ -1,0 +1,100 @@
+library(AnnotationHub)
+ah <- AnnotationHub()
+ath <- query(ah,'thaliana')
+ath_tx <- ath[['AH52247']]
+columns(ath_tx)
+k <- keys(ath_tx,keytype = "GENEID")
+df <- select(ath_tx, keys=k, keytype = "GENEID",columns = "TXNAME")
+tx2gene <- df[,2:1] # TXID在前， GENEID在后
+
+
+salmon.files<-file.path(c('/home/acero/workplace/DRR016125/salmon_quant/quant.sf')  )
+
+names(salmon.files)<- c("salmon.125")
+
+all(file.exists(salmon.files))
+
+
+sailfish.files<-file.path(c('/home/acero/workplace/DRR016125/sailfish_quant/quant.sf' ))
+
+names(sailfish.files)<-c("sailfish.125")
+
+all(file.exists(sailfish.files))
+
+
+library(tximport)
+library(readr)
+
+tx.salmon <- tximport(salmon.files, type = "salmon", tx2gene = tx2gene, countsFromAbundance = "lengthScaledTPM")
+
+
+tx.sailfish <- tximport(sailfish.files, type = "sailfish", tx2gene = tx2gene, countsFromAbundance = "lengthScaledTPM")
+
+
+## merge the counts table together from HTSeq, salmon and sailfish
+salmon.counts<- tx.salmon$counts
+salmon.counts<- as.data.frame(salmon.counts)
+salmon.counts$gene_name<- rownames(salmon.counts)
+
+sailfish.counts<- tx.sailfish$counts
+sailfish.counts<- as.data.frame(sailfish.counts)
+sailfish.counts$gene_name<- rownames(sailfish.counts)
+
+HTSeq.salmon.counts<- inner_join(counts.df, salmon.counts)
+HTSeq.salmon.sailfish.counts<- inner_join(HTSeq.salmon.counts, sailfish.counts) %>% dplyr::select(-Length)
+library(ggplot2)
+### counts correlation for 125 sample only
+ggplot(HTSeq.salmon.sailfish.counts,aes(x=log2(HTseq.125+1), y=log2(salmon.125+1))) + geom_point() + geom_smooth(method="lm") + geom_abline(slope=1, intercept = 0, color="red") + annotate("text", x=15, y=20, label= "spearman cor = 0.86") + ggtitle("HTSeq counts versus salmon counts")
+
+cor(log2(HTSeq.salmon.sailfish.counts$HTseq.125+1), log2(HTSeq.salmon.sailfish.counts$salmon.125+1), method="spearman")
+#[1] 0.9177875
+
+ggplot(HTSeq.salmon.sailfish.counts,aes(x=log2(HTseq.125+1), y=log2(sailfish.125+1))) + geom_point() + geom_smooth(method="lm") + geom_abline(slope=1, intercept = 0, color="red") + annotate("text", x=15, y=20, label= "spearman cor = 0.83") + ggtitle("HTSeq counts versus sailfish counts") 
+
+cor(log2(HTSeq.salmon.sailfish.counts$HTseq.125+1), log2(HTSeq.salmon.sailfish.counts$sailfish.125+1), method="spearman")
+#[1] 0.9229582
+
+cor(log2(HTSeq.salmon.sailfish.counts$salmon.125+1), log2(HTSeq.salmon.sailfish.counts$sailfish.125+1), method="spearman")
+#[1] 0.988235
+
+### merge the TPM table together from HTSeq, salmon and kallisto
+
+head(TPM.from.HTSeq)
+#            HTseq.125 
+#AT1G01010   4.2152847  
+#AT1G01020  13.9719967  
+#AT1G01030   2.0298529  
+#AT1G01040   5.7928980
+#AT1G01050 114.3419982
+
+
+sailfish.TPM<- tx.sailfish$abundance
+sailfish.TPM<- as.data.frame(sailfish.TPM)
+sailfish.TPM$gene_name<- rownames(sailfish.TPM)
+
+salmon.TPM<- tx.salmon$abundance
+salmon.TPM<- as.data.frame(salmon.TPM)
+salmon.TPM$gene_name<- rownames(salmon.TPM)
+
+HTSeq.salmon.TPM<- inner_join(TPM.from.HTSeq, salmon.TPM) 
+
+## re-order the columns
+
+HTSeq.salmon.sailfish.TPM<- inner_join(HTSeq.salmon.TPM, sailfish.TPM) %>% dplyr::select(c(4,1:3,5:10))
+
+## plot TPM correlation
+ggplot(HTSeq.salmon.sailfish.TPM,aes(x=log2(HTseq.125+1), y=log2(salmon.125+1))) + geom_point() + geom_smooth(method="lm") + geom_abline(slope=1, intercept = 0, color="red") + annotate("text", x=12, y=15, label= "spearman cor = 0.84") + ggtitle("HTSeq TPM versus salmon TPM")
+
+cor(log2(HTSeq.salmon.sailfish.TPM$HTseq.125+1), log2(HTSeq.salmon.sailfish.TPM$salmon.125+1), method="spearman")
+#[1] 0.9168303
+
+ggplot(HTSeq.salmon.sailfish.TPM, aes(x=log2(HTseq.125+1), y=log2(sailfish.125+1))) + geom_point() + geom_smooth(method="lm") + geom_abline(slope=1, intercept = 0, color="red") + annotate("text", x=12, y=15, label= "spearman cor = 0.83") + ggtitle("HTSeq TPM versus sailfish TPM")
+
+cor(log2(HTSeq.salmon.sailfish.TPM$HTseq.125+1), log2(HTSeq.salmon.sailfish.TPM$sailfish.125+1), method="spearman")
+#[1] 0.9211827
+
+
+ggplot(HTSeq.salmon.sailfish.TPM,aes(x=log2(salmon.125+1), y=log2(sailfish.125+1))) + geom_point() + geom_smooth(method="lm") + geom_abline(slope=1, intercept = 0, color="red") + annotate("text", x=12, y=15, label= "spearman cor = 0.95") + ggtitle("salmon TPM versus sailfish TPM")
+
+cor(log2(HTSeq.salmon.sailfish.TPM$salmon.125+1), log2(HTSeq.salmon.sailfish.TPM$sailfish.125+1), method="spearman")
+#[1] 0.9858293

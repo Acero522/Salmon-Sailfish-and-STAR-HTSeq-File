@@ -1,0 +1,5 @@
+sailfish quant -i '/home/acero/workplace/SailfishData/Index' -l ISR -1 '/home/acero/workplace/reads/DRR016126_1.fastq' -2 '/home/acero/workplace/reads/DRR016126_2.fastq' -o quant16126
+
+
+sailfish quant -i '/home/acero/workplace/SailfishData/Index' -l U -r '/home/acero/workplace/reads/SRR8570506.fastq' -o SRR
+

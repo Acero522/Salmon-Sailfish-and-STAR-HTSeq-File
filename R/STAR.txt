@@ -1,0 +1,17 @@
+STAR --runMode genomeGenerate --genomeDir /home/acero/workplace/STARindex --genomeFastaFiles /home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa  --sjdbGTFfile '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.46.gtf' --runThreadN 8 --limitGenomeGenerateRAM 45000000000 --genomeSAindexNbases 12
+
+Index
+
+
+STAR --genomeDir '/home/acero/workplace/STARindex'   --readFilesIn '/home/acero/workplace/reads/DRR016125_1.fastq' '/home/acero/workplace/reads/DRR016125_2.fastq' --runThreadN 8 --outSAMtype BAM SortedByCoordinate
+
+mapping
+
+
+
+htseq-count -s no -r pos -t exon -f bam '/home/acero/workplace/STARmap/mapping16125/Aligned.sortedByCoord.out.bam' '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.46.gtf'>DRR016125.counts
+
+
+htseq-count -s no -r pos -t exon -f bam '/home/acero/workplace/Aligned.sortedByCoord.out.bam' '/home/acero/workplace/reads/index/Arabidopsis_thaliana.TAIR10.46.gtf'>SRR.counts
+
+htseq

@@ -1,0 +1,15 @@
+s1<-read.table('/home/acero/workplace/Sailfish126.sf' )
+
+s1c<-as.matrix(s1[,c(1,4)])
+
+write.table(s1c,file="s1.txt" , sep ="    ", row.names =FALSE,col.names =FALSE, quote =FALSE)
+
+R脚本选取quant.sf中的TPM
+
+library(dplyr)
+s<- read.table('/home/acero/workplace/TPM.txt' )
+names(s)<- c("gene_name", "TPM")
+s<- s %>% mutate(gene_name = gsub("\\.[0-9]+", "", gene_name)) 
+write.table (s[,1:2], file ="TPM2.txt", sep ="    ", row.names =FALSE, col.names =FALSE, quote =FALSE)
+
+去除小数点
