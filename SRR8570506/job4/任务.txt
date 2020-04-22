@@ -1,0 +1,5 @@
+4. 在MADS TF家族上，三种量化方法的比较
+https://agris-knowledgebase.org/AtTFDB/tfbrowse.html?fam=MADS
+这个和50个早晨基因的做法是一样的，我们这里有109个基因，而且是属于transcription factor的基因。
+需要产生一系列scatter plot与一个表格。表格的格式与50TPM.txt一样，由下面的列
+GeneName	GeneID	SalmonTPM	SailfishTPM	STARTPM

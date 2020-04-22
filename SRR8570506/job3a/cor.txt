@@ -1,0 +1,15 @@
+> cor(Salmon,RPKM)
+[1] 0.648418
+> cor(Sailfish,RPKM)
+[1] 0.9557926
+> cor(STAR,RPKM)
+[1] -0.001207004
+
+log> cor(Sailfish,Salmon)
+[1] 0.9979617
+log> cor(Sailfish,RPKM)
+[1] 0.9733912
+log> cor(Salmon,RPKM)
+[1] 0.9704116
+> cor(STAR,RPKM)
+[1] 0.003008667

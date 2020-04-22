@@ -1,0 +1,14 @@
+2.
+在文件Sailfish-Salmon-STAR-tau=0.3.xlsx中，在第一列id那列后面加上一列，叫做GeneName，填写该id对应的GeneName。
+
+GeneID与GeneName的对应关系，可以参考文件AGI-to-gene-names_v2.txt（之前已经发给你）。
+
+
+
+(a)  将三种方法返回的TPM值与文件12870_2019_1636_MOESM1_ESM.xlxs中的Table S24的Hypocotyl_control_2那列对比。
+
+产生scatter plot，存成正方形的PDF图。
+20个基因的scatter plot已经有了，现在，将所有的基因的scatter plot画一个。XY轴均取log2。
+
+用hexagonal binning显示scatter plot。例子见附件中的salmon-vs-sailfish-log-scale-hexbin.pdf。
+

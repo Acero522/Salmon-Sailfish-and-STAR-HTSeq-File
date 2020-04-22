@@ -1,0 +1,5 @@
+(b) 将由Salmon方法产生的quant.sf中的NumReads那列，与12870_2019_1636_MOESM1_ESM.xlxs中的Table S23（Total Gene Reads）的Hypocotyl_control_2那列对比。
+
+画一个scatter plot。XY轴均取log2。
+
+用hexagonal binning显示scatter plot。

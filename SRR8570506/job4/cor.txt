@@ -1,0 +1,6 @@
+> cor(STAR,salmon)
+[1] -0.02301519
+> cor(STAR,sailfish)
+[1] -0.02316364
+> cor(salmon,sailfish)
+[1] 0.9995044
